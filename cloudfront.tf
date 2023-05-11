@@ -1,8 +1,8 @@
 module "cdn" {
   source = "terraform-aws-modules/cloudfront/aws"
-
+  version = "3.2.1"
 #   aliases = ["cdn.example.com"]
-
+  default_root_object = "index.html"
   comment             = "My awesome CloudFront"
   enabled             = true
 #   is_ipv6_enabled     = true
@@ -55,4 +55,17 @@ module "cdn" {
 #     acm_certificate_arn = "arn:aws:acm:us-east-1:135367859851:certificate/1032b155-22da-4ae0-9f69-e206f825458b"
 #     ssl_support_method  = "sni-only"
 #   }
+  custom_error_response = [
+    {
+    error_code         = 404
+    response_code      = 200
+    response_page_path = "/index.html"
+    error_caching_min_ttl = 10
+    }, 
+    {
+    error_code         = 403
+    response_code      = 200
+    response_page_path = "/index.html"
+    error_caching_min_ttl = 10
+  }]
 }
